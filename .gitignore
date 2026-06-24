@@ -3,4 +3,6 @@
 .data
 *.sql
 
+# Ignore environment files
+environment* 
 

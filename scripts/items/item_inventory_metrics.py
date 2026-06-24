@@ -27,7 +27,27 @@ def items_have_no_circulations_after_inventory(
     if circulation_history_col not in df.columns:
         raise ValueError(f"Column '{circulation_history_col}' does not exist in the DataFrame.")
     
-    no_circulation = np.where((df[creation_date_col] > datetime.now()) 
+    no_circulation = np.where((df[creation_date_col] < datetime.now()) 
                               & (df[circulation_history_col] == 0), 1, 0)
     
     return no_circulation
+
+
+
+def items_have_no_circulations_after_inventory_within_timeframe(
+        df: pd.DataFrame, 
+        creation_date_col: str, 
+        circulation_history_col: str,
+        time_difference: int = 365*2) -> list:
+    """
+    Check if items have no circulation after the inventory date within a specified timeframe.
+    """
+    if creation_date_col not in df.columns:
+        raise ValueError(f"Column '{creation_date_col}' does not exist in the DataFrame.")
+    if circulation_history_col not in df.columns:
+        raise ValueError(f"Column '{circulation_history_col}' does not exist in the DataFrame.")
+    
+    no_circulation_within_timeframe = np.where((df[creation_date_col] < datetime.now() - timedelta(days=time_difference)) 
+                                               & (df[circulation_history_col] == 0), 1, 0)
+    
+    return no_circulation_within_timeframe

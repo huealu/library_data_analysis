@@ -81,3 +81,4 @@ def items_have_more_than_70circulations(
     more_than_70_circulations = np.where(df[circulation_history_col] >= 70, 1, 0)
     
     return more_than_70_circulations
+

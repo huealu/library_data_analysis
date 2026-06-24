@@ -51,3 +51,33 @@ def items_have_no_circulations_after_inventory_within_timeframe(
                                                & (df[circulation_history_col] == 0), 1, 0)
     
     return no_circulation_within_timeframe
+
+
+
+def items_ages(df: pd.DataFrame, creation_date_col: str) -> list:
+    """
+    Calculate the age of items based on their creation date.
+    """
+    if creation_date_col not in df.columns:
+        raise ValueError(f"Column '{creation_date_col}' does not exist in the DataFrame.")
+    
+    ages = np.where(df[creation_date_col].notnull(), 
+                    (datetime.now() - pd.to_datetime(df[creation_date_col])).dt.years, 
+                    np.nan)
+    
+    return ages
+
+
+
+def items_have_more_than_70circulations(
+        df: pd.DataFrame, 
+        circulation_history_col: str) -> list:
+    """
+    Check if items have equal or more than 70 circulations.
+    """
+    if circulation_history_col not in df.columns:
+        raise ValueError(f"Column '{circulation_history_col}' does not exist in the DataFrame.")
+    
+    more_than_70_circulations = np.where(df[circulation_history_col] >= 70, 1, 0)
+    
+    return more_than_70_circulations

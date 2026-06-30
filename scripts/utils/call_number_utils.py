@@ -42,3 +42,26 @@ def extract_call_number(df: pd.DataFrame, call_number_col: str) -> pd.DataFrame:
         call_number_group_df = pd.concat([call_number_group_df, sub_df], ignore_index=True)
     
     return call_number_group_df
+
+
+def extract_call_number_with_regex(df: pd.DataFrame, call_number_col: str) -> pd.DataFrame:
+    """
+    Extract the call number from the specified column in the DataFrame using regex.
+    
+    Args:
+        df (pd.DataFrame): The input DataFrame containing the call number column.
+        call_number_col (str): The name of the column containing call numbers.
+        
+    Returns:
+        pd.DataFrame: A DataFrame with an additional column 'extracted_call_number' containing the extracted call numbers.
+        
+    Raises:
+        ValueError: If the specified column does not exist in the DataFrame.
+    """
+    if call_number_col not in df.columns:
+        raise ValueError(f"Column '{call_number_col}' does not exist in the DataFrame.")
+    
+    df['extracted_call_number'] = df[call_number_col].str.extract(Call_Number_Pattern, expand=False)
+    
+    return df
+
